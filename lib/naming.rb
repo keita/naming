@@ -130,6 +130,18 @@ module Naming
     def value
       @value
     end
+
+    # @api private
+    def ==(other)
+      return false unless other.kind_of?(self.class)
+      @value == other.value
+    end
+    alias :eql? :"=="
+
+    # @api private
+    def hash
+      @value.hash
+    end
   end
 
   class << self

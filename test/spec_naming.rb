@@ -29,4 +29,16 @@ describe 'Naming' do
     Naming::B.values(list).should == [2]
     Naming.others(list).should == ["abc", 123, nil]
   end
+
+  it 'should equal when the names and values are same' do
+    Naming.A(1).should == Naming.A(1)
+  end
+
+  it 'should equal when names are different' do
+    Naming.A(1).should.not == Naming.B(1)
+  end
+
+  it 'should equal when values are different' do
+    Naming.A(1).should.not == Naming.A(2)
+  end
 end
