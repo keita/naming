@@ -1,8 +1,9 @@
 # naming
 
-naming is a ruby library for generating classes that consist from name and
-value. You can get naming class by sending class method +[]+ with the
-name.
+naming is a Ruby library for generating classes that consist from name and
+value. You can name objects and collect values by it.
+
+[![Gem Version](https://badge.fury.io/rb/naming.png)](http://badge.fury.io/rb/naming) [![Build Status](https://travis-ci.org/keita/naming.png?branch=master)](https://travis-ci.org/keita/naming) [![Coverage Status](https://coveralls.io/repos/keita/naming/badge.png?branch=master)](https://coveralls.io/r/keita/naming) [![Code Climate](https://codeclimate.com/github/keita/naming.png)](https://codeclimate.com/github/keita/naming)
 
 ## Installation
 
@@ -65,9 +66,29 @@ message(Naming.B(2)) #=> "This is case B: 2"
 message(true) #=> "This is case others: true"
 ```
 
-## Licence
+### Name Set
 
-naming is free software distributed under MIT licence.
+```ruby
+#
+# collect objects by name set
+#
+list = [
+  Naming.A(1),
+  Naming.B(2),
+  "abc",
+  Naming.C(3),
+  123,
+  nil
+]
+# collect values of A and B
+Naming[:A, :B].values(list) #=> [1, 2]
+# collect others
+Naming[:A, :B].others(list) #=> ["abc", Naming.C(3), 123, nil]
+```
+
+## License
+
+naming is free software distributed under MIT license.
 
 ## Contributing
 
