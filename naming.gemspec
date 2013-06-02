@@ -22,4 +22,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "structx", "~> 0.1.0"
 
   gem.add_development_dependency "bacon"
+  gem.add_development_dependency "yard"
+  gem.add_development_dependency "redcarpet" unless RUBY_ENGINE == 'jruby'
 end
