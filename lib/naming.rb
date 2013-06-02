@@ -1,3 +1,12 @@
+require 'set'
+
+require 'forwardablex'
+require 'structx'
+
+require 'naming/version'
+require 'naming/meta'
+require 'naming/name-set'
+
 # Naming is a module for generating naming classes that consist by name and
 # value. Naming classes are generated dynamically when you refer it.
 #
@@ -45,105 +54,6 @@
 #   message(Naming.B(2)) #=> "This is case B: 2"
 #   message(true) #=> "This is case others: true"
 module Naming
-  # Meta is a container of name and value. This is super class of all naming
-  # classes.
-  class Meta
-    class << self
-      # Extract values which have the same name from the array.
-      #
-      # @param array [Array]
-      #   target of value extraction
-      #
-      # @example
-      #   Naming::A.values([
-      #     Naming.A(1),
-      #     Naming.B(2),
-      #     "abc",
-      #     Naming.A(3),
-      #     123,
-      #     nil
-      #   ]) #=> [1, 3]
-      def values(array)
-        array.select{|elt| elt.kind_of?(self)}.map{|elt| elt.value}
-      end
-
-      # Collect objects from the array excluding named objects which have the
-      # same name.
-      #
-      # @param array [Array]
-      #   target of value extraction
-      #
-      # @example
-      #   Naming::A.values([
-      #     Naming.A(1),
-      #     Naming.B(2),
-      #     "abc",
-      #     Naming.A(3),
-      #     123,
-      #     nil
-      #   ]) #=> [Naming.B(2), "abc", 123, nil]
-      def others(array)
-        array.select{|elt| not(elt.kind_of?(self))}
-      end
-
-      # Return the name as symbol. It is just name, doesn't include module path.
-      #
-      # @return [Symbol]
-      #   the name
-      #
-      # @example
-      #   Naming::A.name #=> :A
-      def name
-        self.to_s.split("::").last.to_sym
-      end
-
-      # Set the name.
-      #
-      # @param name [Symbol]
-      #   the name
-      # @return [void]
-      #
-      # @api private
-      def name=(name)
-        @name = name unless @name
-      end
-    end
-
-    # @param value [Object]
-    #   the value
-    def initialize(value)
-      @value = value
-    end
-
-    # Return the name.
-    #
-    # @return [Symbol]
-    #   the name
-    def name
-      self.class.name
-    end
-
-    # Return the value.
-    #
-    # @return [Object]
-    #   the value
-    def value
-      @value
-    end
-
-    # @api private
-    def ==(other)
-      return false unless other.kind_of?(self.class)
-      @value == other.value
-    end
-    alias :eql? :"=="
-
-    # @api private
-    def hash
-      @value.hash
-    end
-  end
-
   class << self
     # Generate a new naming class and call the constructor with value.
     #
@@ -182,6 +92,15 @@ module Naming
     #   ]) #=> ["abc", 123, nil]
     def others(array)
       array.select{|elt| not(elt.kind_of?(Meta))}
+    end
+
+    # Return the name set object.
+    #
+    # @param names [Array<Symbol>]
+    #   names
+    # @return [NameSet]
+    def [](*names)
+      NameSet.new(*names)
     end
   end
 end

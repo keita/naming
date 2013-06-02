@@ -17,5 +17,9 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  gem.add_dependency "forwardablex", "~> 0.1.4"
+  gem.add_dependency "structx", "~> 0.1.0"
+
   gem.add_development_dependency "bacon"
 end
